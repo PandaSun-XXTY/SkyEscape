@@ -1,0 +1,7 @@
+游戏名称：飞弹漩涡：战空逃生
+</> 心向太阳
+游戏版本：0.5
+
+GameName : SkyEscape
+</> PandaSun
+Version : 0.5

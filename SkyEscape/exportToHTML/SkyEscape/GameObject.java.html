@@ -1,0 +1,100 @@
+<html>
+<head>
+<title>GameObject.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #eeaf4a;}
+.s1 { color: #d8dee9;}
+.s2 { color: #eceff4;}
+.s3 { color: #7e9fa8;}
+.s4 { color: #616e88;}
+.s5 { color: #06dcf3;}
+.s6 { color: #8fbcbb;}
+</style>
+</head>
+<body bgcolor="#2e3440">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+GameObject.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">SkyEscape</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s3">*</span><span class="s2">;</span>
+
+<span class="s4">/**</span>
+ <span class="s4">* 游戏物体根类</span>
+ <span class="s4">*/</span>
+<span class="s0">public class </span><span class="s1">GameObject </span><span class="s2">{</span>
+    <span class="s1">Image img</span><span class="s2">;              </span><span class="s4">//物体图片</span>
+    <span class="s0">int </span><span class="s1">posix</span><span class="s2">, </span><span class="s1">posiy</span><span class="s2">;        </span><span class="s4">//物体坐标</span>
+    <span class="s0">int </span><span class="s1">moveSpeed</span><span class="s2">;          </span><span class="s4">//物体移动速度</span>
+    <span class="s0">int </span><span class="s1">sizex</span><span class="s2">, </span><span class="s1">sizey</span><span class="s2">;        </span><span class="s4">//物体大小</span>
+
+    <span class="s4">/**</span>
+     <span class="s4">* 构造方法</span>
+     <span class="s4">*/</span>
+    <span class="s0">public </span><span class="s1">GameObject</span><span class="s2">() {</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">GameObject</span><span class="s2">(</span><span class="s1">Image img</span><span class="s2">, </span><span class="s0">int </span><span class="s1">posix</span><span class="s2">, </span><span class="s0">int </span><span class="s1">posiy</span><span class="s2">, </span><span class="s0">int </span><span class="s1">sizex</span><span class="s2">, </span><span class="s0">int </span><span class="s1">sizey</span><span class="s2">, </span><span class="s0">int </span><span class="s1">moveSpeed</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">img </span><span class="s3">= </span><span class="s1">img</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">posix </span><span class="s3">= </span><span class="s1">posix</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">posiy </span><span class="s3">= </span><span class="s1">posiy</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">moveSpeed </span><span class="s3">= </span><span class="s1">moveSpeed</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">sizex </span><span class="s3">= </span><span class="s1">sizex</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">sizey </span><span class="s3">= </span><span class="s1">sizey</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">GameObject</span><span class="s2">(</span><span class="s1">Image img</span><span class="s2">, </span><span class="s0">int </span><span class="s1">moveSpeed</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">(</span><span class="s1">img</span><span class="s2">, </span><span class="s5">200</span><span class="s2">, </span><span class="s5">200</span><span class="s2">);</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">moveSpeed </span><span class="s3">= </span><span class="s1">moveSpeed</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">GameObject</span><span class="s2">(</span><span class="s1">Image img</span><span class="s2">, </span><span class="s0">int </span><span class="s1">posix</span><span class="s2">, </span><span class="s0">int </span><span class="s1">posiy</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">(</span><span class="s1">img</span><span class="s2">);</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">posix </span><span class="s3">= </span><span class="s1">posix</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">posiy </span><span class="s3">= </span><span class="s1">posiy</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">GameObject</span><span class="s2">(</span><span class="s1">Image img</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">img </span><span class="s3">= </span><span class="s1">img</span><span class="s2">;</span>
+        <span class="s1">moveSpeed </span><span class="s3">= </span><span class="s5">2</span><span class="s2">;</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s0">this</span><span class="s2">.</span><span class="s1">img </span><span class="s3">!= </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s0">this</span><span class="s2">.</span><span class="s1">sizex </span><span class="s3">= </span><span class="s1">img</span><span class="s2">.</span><span class="s1">getWidth</span><span class="s2">(</span><span class="s0">null</span><span class="s2">);</span>
+            <span class="s0">this</span><span class="s2">.</span><span class="s1">sizey </span><span class="s3">= </span><span class="s1">img</span><span class="s2">.</span><span class="s1">getHeight</span><span class="s2">(</span><span class="s0">null</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private </span><span class="s1">GameObject</span><span class="s2">(</span><span class="s0">int </span><span class="s1">posix</span><span class="s2">, </span><span class="s0">int </span><span class="s1">posiy</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">posix </span><span class="s3">= </span><span class="s1">posix</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">posiy </span><span class="s3">= </span><span class="s1">posiy</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">GameObject</span><span class="s2">(</span><span class="s1">Image img</span><span class="s2">, </span><span class="s0">int </span><span class="s1">posix</span><span class="s2">, </span><span class="s0">int </span><span class="s1">posiy</span><span class="s2">, </span><span class="s0">int </span><span class="s1">moveSpeed</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">(</span><span class="s1">img</span><span class="s2">, </span><span class="s1">posix</span><span class="s2">, </span><span class="s1">posiy</span><span class="s2">);</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">moveSpeed </span><span class="s3">= </span><span class="s1">moveSpeed</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s4">/**</span>
+     <span class="s4">* 加载自己</span>
+     <span class="s4">*</span>
+     <span class="s4">* </span><span class="s6">@param </span><span class="s4">pen Graphics</span>
+     <span class="s4">*/</span>
+    <span class="s0">public void </span><span class="s1">drawSelf</span><span class="s2">(</span><span class="s1">Graphics pen</span><span class="s2">) {</span>
+        <span class="s1">pen</span><span class="s2">.</span><span class="s1">drawImage</span><span class="s2">(</span><span class="s1">img</span><span class="s2">, </span><span class="s1">posix</span><span class="s2">, </span><span class="s1">posiy</span><span class="s2">, </span><span class="s1">sizex</span><span class="s2">, </span><span class="s1">sizey</span><span class="s2">, </span><span class="s0">null</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s4">/**</span>
+     <span class="s4">* 返回这个Object的矩形</span>
+     <span class="s4">*</span>
+     <span class="s4">* </span><span class="s6">@return </span><span class="s4">Rectangle</span>
+     <span class="s4">* (n.矩形)</span>
+     <span class="s4">*/</span>
+    <span class="s0">public </span><span class="s1">Rectangle getRec</span><span class="s2">() {</span>
+        <span class="s0">return new </span><span class="s1">Rectangle</span><span class="s2">(</span><span class="s1">posix</span><span class="s2">, </span><span class="s1">posiy</span><span class="s2">, </span><span class="s1">sizex</span><span class="s2">, </span><span class="s1">sizey</span><span class="s2">);</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

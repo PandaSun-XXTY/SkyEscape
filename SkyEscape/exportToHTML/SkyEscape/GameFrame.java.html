@@ -1,0 +1,182 @@
+<html>
+<head>
+<title>GameFrame.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #eeaf4a;}
+.s1 { color: #d8dee9;}
+.s2 { color: #eceff4;}
+.s3 { color: #7e9fa8;}
+.s4 { color: #616e88;}
+.s5 { color: #add390;}
+.s6 { color: #06dcf3;}
+.s7 { color: #8fbcbb;}
+</style>
+</head>
+<body bgcolor="#2e3440">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+GameFrame.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">SkyEscape</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s3">*</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">event</span><span class="s2">.</span><span class="s1">KeyAdapter</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">event</span><span class="s2">.</span><span class="s1">KeyEvent</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">event</span><span class="s2">.</span><span class="s1">WindowAdapter</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">awt</span><span class="s2">.</span><span class="s1">event</span><span class="s2">.</span><span class="s1">WindowEvent</span><span class="s2">;</span>
+
+<span class="s0">import static </span><span class="s1">SkyEscape</span><span class="s2">.</span><span class="s1">Tool</span><span class="s2">.</span><span class="s1">SIZEX_FRAME</span><span class="s2">;</span>
+<span class="s0">import static </span><span class="s1">SkyEscape</span><span class="s2">.</span><span class="s1">Tool</span><span class="s2">.</span><span class="s1">SIZEY_FRAME</span><span class="s2">;</span>
+
+<span class="s4">/**</span>
+ <span class="s4">* 游戏窗口</span>
+ <span class="s4">*/</span>
+<span class="s0">public class </span><span class="s1">GameFrame </span><span class="s0">extends </span><span class="s1">Frame </span><span class="s2">{</span>
+    <span class="s0">public static final </span><span class="s1">String GAME_NAME </span><span class="s3">= </span><span class="s5">&quot;飞弹漩涡：战空逃生&quot;</span><span class="s2">;</span>
+    <span class="s4">//int posixPlane = 100,posiyPlane = 100;      //飞机x轴位置与y轴位置</span>
+    <span class="s0">int </span><span class="s1">posixFrame </span><span class="s3">= </span><span class="s6">700</span><span class="s2">, </span><span class="s1">posiyFrame </span><span class="s3">= </span><span class="s6">300</span><span class="s2">;      </span><span class="s4">//窗口x轴位置与y轴位置</span>
+    <span class="s1">Image backGround </span><span class="s3">= </span><span class="s1">Tool</span><span class="s2">.</span><span class="s1">getImage</span><span class="s2">(</span><span class="s5">&quot;Pictures/Background.jpg&quot;</span><span class="s2">);        </span><span class="s4">//加载背景</span>
+    <span class="s1">Image planePic </span><span class="s3">= </span><span class="s1">Tool</span><span class="s2">.</span><span class="s1">getImage</span><span class="s2">(</span><span class="s5">&quot;Pictures/Plane.png&quot;</span><span class="s2">);                  </span><span class="s4">//加载飞机</span>
+    <span class="s0">int </span><span class="s1">keyPress</span><span class="s2">, </span><span class="s1">keyReleased</span><span class="s2">;</span>
+
+    <span class="s1">Plane plane </span><span class="s3">= </span><span class="s0">new </span><span class="s1">Plane</span><span class="s2">(</span><span class="s1">planePic</span><span class="s2">, </span><span class="s6">100</span><span class="s2">, </span><span class="s6">100</span><span class="s2">, </span><span class="s6">75</span><span class="s2">, </span><span class="s6">75</span><span class="s2">, </span><span class="s6">2</span><span class="s2">);       </span><span class="s4">//新建飞机</span>
+    <span class="s1">Shell</span><span class="s2">[] </span><span class="s1">shells </span><span class="s3">= </span><span class="s0">new </span><span class="s1">Shell</span><span class="s2">[</span><span class="s6">150</span><span class="s2">];      </span><span class="s4">//新建炮弹</span>
+    <span class="s0">private </span><span class="s1">Image offScreenImage </span><span class="s3">= </span><span class="s0">null</span><span class="s2">;</span>
+
+    <span class="s0">public static void </span><span class="s1">main</span><span class="s2">(</span><span class="s1">String</span><span class="s2">[] </span><span class="s1">args</span><span class="s2">) {</span>
+        <span class="s1">GameFrame planeWar </span><span class="s3">= </span><span class="s0">new </span><span class="s1">GameFrame</span><span class="s2">();</span>
+        <span class="s1">planeWar</span><span class="s2">.</span><span class="s1">launchFrame</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s4">/**</span>
+     <span class="s4">* 初始化窗口</span>
+     <span class="s4">* 宽:700,高：500;</span>
+     <span class="s4">* 位置:700,300;</span>
+     <span class="s4">*/</span>
+    <span class="s0">public void </span><span class="s1">launchFrame</span><span class="s2">() {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">setTitle</span><span class="s2">(</span><span class="s1">GAME_NAME</span><span class="s2">);</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">setVisible</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);  </span><span class="s4">//窗口默认不可见，需要设置为可见</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">setSize</span><span class="s2">(</span><span class="s1">SIZEX_FRAME</span><span class="s2">, </span><span class="s1">SIZEY_FRAME</span><span class="s2">);      </span><span class="s4">//设置窗口大小</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">setLocation</span><span class="s2">(</span><span class="s1">posixFrame</span><span class="s2">, </span><span class="s1">posiyFrame</span><span class="s2">);      </span><span class="s4">//设置窗口位置</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">addWindowListener</span><span class="s2">(             </span><span class="s4">//窗口监听增加（关闭）</span>
+                <span class="s0">new </span><span class="s1">WindowAdapter</span><span class="s2">() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">windowClosing</span><span class="s2">(</span><span class="s1">WindowEvent e</span><span class="s2">) {</span>
+                        <span class="s1">System</span><span class="s2">.</span><span class="s1">exit</span><span class="s2">(</span><span class="s6">0</span><span class="s2">);</span>
+                    <span class="s2">}</span>
+                <span class="s2">});</span>
+        <span class="s4">//启动窗口绘制线程</span>
+        <span class="s0">new </span><span class="s1">PaintThread</span><span class="s2">().</span><span class="s1">start</span><span class="s2">();</span>
+        <span class="s4">//启动键盘监听</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">addKeyListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">KeyBoard</span><span class="s2">());</span>
+        <span class="s4">//初始化炮弹</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s3">= </span><span class="s6">0</span><span class="s2">; </span><span class="s1">i </span><span class="s3">&lt; </span><span class="s1">shells</span><span class="s2">.</span><span class="s1">length</span><span class="s2">; </span><span class="s1">i</span><span class="s3">++</span><span class="s2">) {</span>
+            <span class="s1">shells</span><span class="s2">[</span><span class="s1">i</span><span class="s2">] </span><span class="s3">= </span><span class="s0">new </span><span class="s1">Shell</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s4">/**</span>
+     <span class="s4">* 显示内容</span>
+     <span class="s4">*/</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">paint</span><span class="s2">(</span><span class="s1">Graphics pen</span><span class="s2">) {</span>
+        <span class="s1">Color old </span><span class="s3">= </span><span class="s1">pen</span><span class="s2">.</span><span class="s1">getColor</span><span class="s2">();</span>
+        <span class="s1">pen</span><span class="s2">.</span><span class="s1">drawImage</span><span class="s2">(</span><span class="s1">backGround</span><span class="s2">, </span><span class="s6">0</span><span class="s2">, </span><span class="s6">0</span><span class="s2">, </span><span class="s6">700</span><span class="s2">, </span><span class="s6">500</span><span class="s2">, </span><span class="s0">null</span><span class="s2">);</span>
+        <span class="s1">plane</span><span class="s2">.</span><span class="s1">drawSelf</span><span class="s2">(</span><span class="s1">pen</span><span class="s2">);</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Shell shell </span><span class="s3">: </span><span class="s1">shells</span><span class="s2">) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">shell </span><span class="s3">!= </span><span class="s0">null</span><span class="s2">) {</span>
+                <span class="s1">shell</span><span class="s2">.</span><span class="s1">drawSelf</span><span class="s2">(</span><span class="s1">pen</span><span class="s2">);</span>
+            <span class="s2">}</span>
+
+        <span class="s2">}</span>
+        <span class="s1">pen</span><span class="s2">.</span><span class="s1">setColor</span><span class="s2">(</span><span class="s1">old</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s4">/**</span>
+     <span class="s4">* 后台缓冲画布</span>
+     <span class="s4">*</span>
+     <span class="s4">* </span><span class="s7">@param </span><span class="s4">pen the specified Graphics window</span>
+     <span class="s4">*/</span>
+    <span class="s0">public void </span><span class="s1">update</span><span class="s2">(</span><span class="s1">Graphics pen</span><span class="s2">) {</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">offScreenImage </span><span class="s3">== </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">offScreenImage </span><span class="s3">= </span><span class="s0">this</span><span class="s2">.</span><span class="s1">createImage</span><span class="s2">(</span><span class="s1">SIZEX_FRAME</span><span class="s2">, </span><span class="s1">SIZEY_FRAME</span><span class="s2">);       </span><span class="s4">//传入游戏窗口宽度与高度</span>
+        <span class="s2">}</span>
+        <span class="s1">Graphics penOff </span><span class="s3">= </span><span class="s1">offScreenImage</span><span class="s2">.</span><span class="s1">getGraphics</span><span class="s2">();</span>
+        <span class="s1">paint</span><span class="s2">(</span><span class="s1">penOff</span><span class="s2">);</span>
+        <span class="s1">pen</span><span class="s2">.</span><span class="s1">drawImage</span><span class="s2">(</span><span class="s1">offScreenImage</span><span class="s2">, </span><span class="s6">0</span><span class="s2">, </span><span class="s6">0</span><span class="s2">, </span><span class="s0">null</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s4">/**</span>
+     <span class="s4">* 监测键盘输入</span>
+     <span class="s4">*/</span>
+    <span class="s0">class </span><span class="s1">KeyBoard </span><span class="s0">extends </span><span class="s1">KeyAdapter </span><span class="s2">{</span>
+        <span class="s1">@Override</span>
+        <span class="s0">public void </span><span class="s1">keyPressed</span><span class="s2">(</span><span class="s1">KeyEvent key</span><span class="s2">) {</span>
+            <span class="s4">//System.out.println(key.getKeyCode());</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">key</span><span class="s2">.</span><span class="s1">getKeyCode</span><span class="s2">() </span><span class="s3">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_SHIFT</span><span class="s2">) {</span>
+                <span class="s1">plane</span><span class="s2">.</span><span class="s1">addSpeed</span><span class="s2">();</span>
+            <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">key</span><span class="s2">.</span><span class="s1">getKeyCode</span><span class="s2">() </span><span class="s3">== </span><span class="s1">KeyEvent</span><span class="s2">.</span><span class="s1">VK_CONTROL</span><span class="s2">) {</span>
+                <span class="s1">plane</span><span class="s2">.</span><span class="s1">reduceSpeed</span><span class="s2">();</span>
+            <span class="s2">}</span>
+            <span class="s1">keyPress </span><span class="s3">= </span><span class="s1">key</span><span class="s2">.</span><span class="s1">getKeyCode</span><span class="s2">();</span>
+            <span class="s1">plane</span><span class="s2">.</span><span class="s1">setKeyPress</span><span class="s2">(</span><span class="s1">keyPress</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s1">@Override</span>
+        <span class="s0">public void </span><span class="s1">keyReleased</span><span class="s2">(</span><span class="s1">KeyEvent key</span><span class="s2">) {</span>
+            <span class="s1">keyReleased </span><span class="s3">= </span><span class="s1">key</span><span class="s2">.</span><span class="s1">getKeyCode</span><span class="s2">();</span>
+            <span class="s1">plane</span><span class="s2">.</span><span class="s1">setKeyReleased</span><span class="s2">(</span><span class="s1">keyReleased</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s4">/**</span>
+     <span class="s4">* 重画线程</span>
+     <span class="s4">*/</span>
+    <span class="s0">class </span><span class="s1">PaintThread </span><span class="s0">extends </span><span class="s1">Thread </span><span class="s2">{</span>
+        <span class="s1">@Override</span>
+        <span class="s0">public void </span><span class="s1">run</span><span class="s2">() {</span>
+            <span class="s0">while </span><span class="s2">(</span><span class="s0">true</span><span class="s2">) {</span>
+                <span class="s1">repaint</span><span class="s2">();</span>
+                <span class="s0">try </span><span class="s2">{</span>
+                    <span class="s1">Thread</span><span class="s2">.</span><span class="s1">sleep</span><span class="s2">(</span><span class="s6">1000 </span><span class="s3">/ </span><span class="s6">140</span><span class="s2">);       </span><span class="s4">//millis单位：毫秒(ms)</span>
+                    <span class="s4">//Thread.sleep(1000/100);       //millis单位：毫秒(ms)</span>
+                <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">InterruptedException e</span><span class="s2">) {</span>
+                    <span class="s0">throw new </span><span class="s1">RuntimeException</span><span class="s2">(</span><span class="s1">e</span><span class="s2">);</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+
+
+
+
+
+
+
+<span class="s4">/*      位于类GameFrame下的普通方法，供学习时使用 
+@Override 
+public void paint(Graphics pen) { 
+    //System.out.println(&quot;Running&quot;); 
+    Color old = pen.getColor(); 
+    pen.drawImage(backGround, 0, 0, 700, 500, null); 
+    plane.drawSelf(pen); 
+        /*en.drawImage(plane, posixPlane, posiyPlane, 100, 100, null); 
+        /posixPlane++; 
+        pen.drawImage(plane,300,200,100,100,null); 
+        pen.drawImage(plane,500,100,100,100,null); 
+        pen.drawImage(plane,100,350,100,100,null); 
+        pen.drawImage(plane,500,350,100,100,null); 
+        pen.setColor(new Color(84, 225, 48)); 
+        pen是一只画笔 
+        pen.drawLine(185,100,400,300); 
+        pen.drawRect(185,100,215,200); 
+        pen.setColor(new Color(81, 161, 239)); 
+        pen.drawString(&quot;&lt;/&gt;心向太阳&quot;,550,450); 
+        pen.drawString(&quot;未经许可不得商用&quot;,580,465); 
+    pen.setColor(old); 
+}*/</span></pre>
+</body>
+</html>
